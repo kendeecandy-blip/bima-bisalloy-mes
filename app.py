@@ -34,6 +34,23 @@ st.markdown("""
     [data-testid="stSidebar"] { background-color: #f4f6f9; }
     </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
+    /* Memaksa teks radio button di sidebar tetap kontras dan terbaca di mode gelap maupun terang */
+    div[data-testid="stSidebar"] label, 
+    div[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] p,
+    div[data-testid="stSidebar"] .st-ae, 
+    div[data-testid="stSidebar"] .st-af,
+    div[data-testid="stSidebar"] span {
+        color: #31333F !important;
+    }
+    /* Memastikan teks opsi menu radio button terlihat jelas */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label p {
+        color: #31333F !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 
 # --- DATABASE & KONFIGURASI DIREKTORI ---
 load_dotenv()
