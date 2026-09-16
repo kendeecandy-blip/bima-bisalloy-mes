@@ -109,6 +109,7 @@ class ProjectProgressLog(Base):
     qc_notes = Column(Text, nullable=False)
     status = Column(Enum(QCStatus), nullable=False)
     image_path = Column(String(255), nullable=True)
+    image_caption = Column(Text, nullable=True)  # FITUR BARU: Deskripsi Foto Arsip
     material_validated = Column(Boolean, default=False)
     despatch_to_bb = Column(String(255), nullable=True)
     po_vendor_number = Column(String(100), nullable=True)
