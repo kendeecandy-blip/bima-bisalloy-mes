@@ -34,8 +34,8 @@ st.markdown("""
     
     /* Dashboard Metric Cards */
     .metric-card { background-color: #f8f9fa; border-left: 5px solid #003366; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .metric-card h4 { margin: 0; font-size: 15px; color: #666; font-weight: normal; }
-    .metric-card h2 { margin: 5px 0 0 0; font-size: 32px; color: #003366; font-weight: bold; }
+    .metric-card h4 { margin: 0; font-size: 14px; color: #666; font-weight: normal; }
+    .metric-card h2 { margin: 5px 0 0 0; font-size: 28px; color: #003366; font-weight: bold; }
     
     /* SIDEBAR THEME FIX - Dark Mode & White Text */
     [data-testid="stSidebar"] { background-color: #002244 !important; }
@@ -712,17 +712,19 @@ def view_dashboard():
     if not all_projects:
         st.info("Belum ada proyek yang terdaftar di sistem."); db.close(); return
 
-    # FITUR 2: KARTU METRIK DASHBOARD
+    # FITUR 2: KARTU METRIK DASHBOARD (UPDATE 5 KOLOM LOGISTIK)
     total_so = len(all_projects)
-    total_finished = sum(1 for p in all_projects if p.status_proyek == ProjectStatus.COMPLETED)
-    total_delivered = sum(1 for p in all_projects if p.delivery_number and p.logistic_status and any(k in p.logistic_status.upper() for k in ['DIKIRIM', 'DITERIMA']))
     total_progress = sum(1 for p in all_projects if p.status_proyek in [ProjectStatus.IN_PRODUCTION, ProjectStatus.WAITING_DRAWING])
+    total_finished = sum(1 for p in all_projects if p.status_proyek == ProjectStatus.COMPLETED and p.logistic_status == '🏭 FABRIKASI SELESAI (BELUM DIKIRIM)')
+    total_in_transit = sum(1 for p in all_projects if p.logistic_status == '🚚 DALAM PERJALANAN (BELUM DITERIMA)')
+    total_delivered = sum(1 for p in all_projects if p.logistic_status == '✅ SELESAI TOTAL (SUDAH DITERIMA KONSUMEN)')
 
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4, c5 = st.columns(5)
     c1.markdown(f"<div class='metric-card'><h4>Total SO</h4><h2>{total_so}</h2></div>", unsafe_allow_html=True)
     c2.markdown(f"<div class='metric-card'><h4>Total Progress</h4><h2>{total_progress}</h2></div>", unsafe_allow_html=True)
     c3.markdown(f"<div class='metric-card'><h4>Total Finished</h4><h2>{total_finished}</h2></div>", unsafe_allow_html=True)
-    c4.markdown(f"<div class='metric-card'><h4>Total Delivered</h4><h2>{total_delivered}</h2></div>", unsafe_allow_html=True)
+    c4.markdown(f"<div class='metric-card'><h4>In Transit</h4><h2>{total_in_transit}</h2></div>", unsafe_allow_html=True)
+    c5.markdown(f"<div class='metric-card'><h4>Total Delivered</h4><h2>{total_delivered}</h2></div>", unsafe_allow_html=True)
 
     st.subheader("📋 Ringkasan Progres Proyek Global")
     summary_data = []
